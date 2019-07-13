@@ -5,15 +5,14 @@ import random
 pygame.init()
 pygame.time.set_timer(pygame.USEREVENT+1, 2500)
 
-display_height = 600
-display_width = 800
+display_height = 504
+display_width = 900
 
-black = (0,0,0)
-white = (255,255,255)
-red = (255,0,0)
-green = (0,255,0)
-blue = (0,0,255)
-
+black = (0, 0, 0)
+white = (255, 255, 255)
+red = (255, 0, 0)
+green = (0, 255, 0)
+blue = (0, 0, 255)
 
 flappy_size = 42
 
@@ -22,19 +21,12 @@ pipes = []
 play = False
 
 myfont = pygame.font.SysFont("monospace", 15)
-
-# utworzenie okna
 window = pygame.display.set_mode((display_width, display_height))
-# ustawiamy etykietę
 pygame.display.set_caption('Flappy')
-
 clock = pygame.time.Clock()
-
 background = pygame.image.load('background.png')
 
 
-
-# KLASA BIRD
 class Bird():
 
     dead = False
@@ -51,10 +43,8 @@ class Bird():
         window.blit(self.flappy, (self.x, self.y))
         pygame.display.flip()
 
-
     def jump(self):
         self.velocity += self.lift
-
 
     def update(self):
         self.velocity += self.gravity
@@ -70,9 +60,6 @@ class Bird():
             self.velocity = 0
 
 
-
-
-### KLASA PIPE ###
 class Pipe():
 
     global score
@@ -88,7 +75,6 @@ class Pipe():
         pygame.draw.rect(window, green, (self.x, 0, self.w, self.top), 0)
         pygame.draw.rect(window, green, (self.x, display_height - self.bottom, self.w, self.bottom), 0)
 
-
     def update(self):
         self.x -= self.speed
 
@@ -102,14 +88,12 @@ class Pipe():
             return True
 
 
-## KONTENER RUR ###
 def manage_pipes():
-
     pipes.append(Pipe())
     if len(pipes) > 3:
         pipes.pop(0)
 
-## RYSOWANIE RUR ###
+
 def draw_pipes():
 
     global score
@@ -126,7 +110,6 @@ def draw_pipes():
             score += 1
 
 
-### PUNKTY ###
 def texts(score):
    font = pygame.font.Font(None, 50)
    score_surf = font.render(str(score), True, (0, 0, 0))
@@ -135,7 +118,6 @@ def texts(score):
    window.blit(score_surf, score_rect)
 
 
-### KONIEC GRY ###
 def game_over():
     global play
     play = False
@@ -151,8 +133,6 @@ def game_over():
     window.blit(GOsurf, GOrect)
     pygame.display.flip()
 
-
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit(0)
@@ -162,10 +142,8 @@ def game_over():
                 setup()
 
 
-### USTAWIENIA POCZATKOWE
 def setup():
     global play, pipes, pipe, score
-
     pipes = []
     pipe = Pipe()  # obiekt rury
     bird.y = display_height / 2 - 200
@@ -173,15 +151,11 @@ def setup():
     play = True
 
 
-
 def main():
 
     global score
-
     while True:
-
         if play:
-
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit(0)
@@ -192,22 +166,17 @@ def main():
                     manage_pipes()
 
             window.blit(background,(0,0))
-
             draw_pipes()
             bird.update()
             bird.draw()
             texts(score)
-
             pygame.display.update()
             clock.tick(30)
-
         else:
             game_over()
 
 
-
-
-bird = Bird() #obiekt ptaka
+bird = Bird()
 
 setup()
 main()
